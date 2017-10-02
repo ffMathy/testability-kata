@@ -68,7 +68,10 @@ namespace TestabilityKata
         public void AppendLine(string line)
         {
             if (!File.Exists(FilePath))
+            {
+                Logger.Log(LogLevel.Warning, "The file " + FilePath + " was created since it didn't exist.");
                 File.WriteAllText(FilePath, "");
+            }
 
             File.SetAttributes(FilePath, FileAttributes.Normal);
             File.AppendAllLines(FilePath, new[] { line });

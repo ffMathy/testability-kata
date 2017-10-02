@@ -7,13 +7,19 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
+            new Program().Run();
+        }
+
+        public void Run()
+        {
             try
             {
-                Logger.Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
-                MailSender.SendMail("some-invalid-email-address.com", "Program has started.");
-            } catch(Exception ex)
+                new Logger().Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
+                new MailSender().SendMail("some-invalid-email-address.com", "Program has started.");
+            }
+            catch (Exception ex)
             {
-                Logger.Log(LogLevel.Error, "An error occured: " + ex);
+                new Logger().Log(LogLevel.Error, "An error occured: " + ex);
             }
         }
     }
@@ -24,9 +30,9 @@ namespace TestabilityKata
         Error
     }
 
-    static class Logger
+    class Logger
     {
-        public static void Log(LogLevel logLevel, string logText)
+        public void Log(LogLevel logLevel, string logText)
         {
             Console.WriteLine(logLevel + ": " + logText);
 
@@ -38,15 +44,15 @@ namespace TestabilityKata
                 writer.AppendLine(logText);
 
                 //send e-mail about error
-                MailSender.SendMail("mathias.lorenzen@mailinator.com", logText);
+                new MailSender().SendMail("mathias.lorenzen@mailinator.com", logText);
 
             }
         }
     }
 
-    static class MailSender
+    class MailSender
     {
-        public static void SendMail(string recipient, string content)
+        public void SendMail(string recipient, string content)
         {
             if (!recipient.Contains("@"))
                 throw new ArgumentException("The recipient must be a valid e-mail.", nameof(recipient));

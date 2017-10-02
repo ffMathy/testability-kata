@@ -7,31 +7,57 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
-            new Program().Run();
+            new Program(
+                    new Logger(
+                        new MailSender()),
+                    new MailSender())
+                .Run();
+        }
+
+        private readonly Logger logger;
+        private readonly MailSender mailSender;
+
+        public Program(
+            Logger logger,
+            MailSender mailSender)
+        {
+            this.logger = logger;
+            this.mailSender = mailSender;
         }
 
         public void Run()
         {
             try
             {
-                new Logger().Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
-                new MailSender().SendMail("some-invalid-email-address.com", "Program has started.");
+                logger.Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
+                mailSender.SendMail("some-invalid-email-address.com", "Program has started.");
             }
             catch (Exception ex)
             {
-                new Logger().Log(LogLevel.Error, "An error occured: " + ex);
+                logger.Log(LogLevel.Error, "An error occured: " + ex);
             }
         }
     }
 
-    enum LogLevel
+    public enum LogLevel
     {
         Warning,
         Error
     }
 
-    class Logger
+    public class Logger
     {
+        //we can't do CustomFileWriter yet, because its file name depends on the log level.
+        //see the next step for that.
+
+        private readonly MailSender mailSender;
+
+        public Logger(
+            MailSender mailSender)
+        {
+            this.mailSender = mailSender;
+        }
+
         public void Log(LogLevel logLevel, string logText)
         {
             Console.WriteLine(logLevel + ": " + logText);
@@ -44,13 +70,13 @@ namespace TestabilityKata
                 writer.AppendLine(logText);
 
                 //send e-mail about error
-                new MailSender().SendMail("mathias.lorenzen@mailinator.com", logText);
+                mailSender.SendMail("mathias.lorenzen@mailinator.com", logText);
 
             }
         }
     }
 
-    class MailSender
+    public class MailSender
     {
         public void SendMail(string recipient, string content)
         {
@@ -62,7 +88,7 @@ namespace TestabilityKata
         }
     }
 
-    class CustomFileWriter
+    public class CustomFileWriter
     {
         public string FilePath { get; }
 

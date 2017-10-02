@@ -75,7 +75,7 @@ namespace TestabilityKata
         {
             if (!File.Exists(FilePath))
             {
-                Logger.Log(LogLevel.Warning, "The file " + FilePath + " was created since it didn't exist.");
+                new Logger().Log(LogLevel.Warning, "The file " + FilePath + " was created since it didn't exist.");
                 File.WriteAllText(FilePath, "");
             }
 

@@ -51,11 +51,14 @@ namespace TestabilityKata
         //see the next step for that.
 
         private readonly MailSender mailSender;
+        private readonly Logger logger;
 
         public Logger(
-            MailSender mailSender)
+            MailSender mailSender,
+            Logger logger)
         {
             this.mailSender = mailSender;
+            this.logger = logger;
         }
 
         public void Log(LogLevel logLevel, string logText)
@@ -66,7 +69,7 @@ namespace TestabilityKata
             {
 
                 //also log to file
-                var writer = new CustomFileWriter(@"C:\" + logLevel + "-annoying-log-file.txt");
+                var writer = new CustomFileWriter(logger, @"C:\" + logLevel + "-annoying-log-file.txt");
                 writer.AppendLine(logText);
 
                 //send e-mail about error
@@ -90,10 +93,16 @@ namespace TestabilityKata
 
     public class CustomFileWriter
     {
+        private readonly Logger logger;
+
         public string FilePath { get; }
 
-        public CustomFileWriter(string filePath)
+        public CustomFileWriter(
+            Logger logger,
+            string filePath)
         {
+            this.logger = logger;
+
             FilePath = filePath;
         }
 
@@ -101,7 +110,7 @@ namespace TestabilityKata
         {
             if (!File.Exists(FilePath))
             {
-                new Logger().Log(LogLevel.Warning, "The file " + FilePath + " was created since it didn't exist.");
+                logger.Log(LogLevel.Warning, "The file " + FilePath + " was created since it didn't exist.");
                 File.WriteAllText(FilePath, "");
             }
 

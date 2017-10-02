@@ -40,7 +40,7 @@ namespace TestabilityKata
             {
 
                 //also log to file
-                var writer = new CustomFileWriter(@"C:\annoying-log-file.txt");
+                var writer = new CustomFileWriter(@"C:\" + logLevel + "-annoying-log-file.txt");
                 writer.AppendLine(logText);
 
                 //send e-mail about error

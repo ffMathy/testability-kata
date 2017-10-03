@@ -1,6 +1,7 @@
 using Autofac;
 using FluffySpoon.Testing.Autofake;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace TestabilityKata.Tests
 {
@@ -10,8 +11,23 @@ namespace TestabilityKata.Tests
         [TestMethod]
         public void ProgramSendsEmailWhenStartingUp()
         {
-            //problem: we certainly don't want to send e-mails out
-            Program.Main(new string[0]);
+            var fakeMailSender = Substitute.For<IMailSender>();
+            var fakeLogger = Substitute.For<ILogger>();
+
+            var program = new Program(
+                fakeLogger,
+                fakeMailSender);
+
+            program.Run();
+
+            //we here make sure that SendMail was called
+            //with the mail body "Program has started." and
+            //any e-mail address (since that is not important for this test)
+            fakeMailSender
+                .Received()
+                .SendMail(
+                    Arg.Any<string>(),
+                    "Program has started.");
         }
         
         [TestMethod]

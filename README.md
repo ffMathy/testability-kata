@@ -54,4 +54,9 @@ Similarly to step 5, we here need to have `NSubstitute` create a fake dependency
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-5...step-6
 
+### Unit testing the `MailSender` class
+
+#### 7. Test that the mail sender throws an exception if the e-mail is invalid (doesn't contain a `@`)
+It turns out that this class has no dependencies and was already testable all along - so this should be easy. No faking required here, and we can just invoke the method directly and put an `ExpectedExceptionAttribute` on our test to describe that it should _pass_ instead of failing when a specific exception is thrown.
+
 ## Cleaning up the code

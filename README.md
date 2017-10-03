@@ -10,4 +10,6 @@ This allows objects to actually have some form of "state". Essentially a static 
 ## 2. Apply manual dependency injection to non-static class dependencies
 Doing this is part of following the Open/Closed principle (the "O" in SOLID - see more below). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class.
 
-_Note that the `MailSender` class has not been converted yet in this step - that will be done in the next, since the constructor parameter for file name depends on the log level, which is only available by the time the `Log` method is called._
+_Note that the `MailSender` class dependency has not been converted yet in this step - that will be done in the next, since the constructor parameter for file name depends on the log level, which is only available by the time the `Log` method is called._
+
+## 3. 

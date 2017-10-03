@@ -77,7 +77,7 @@ It is important to note that an integration test focuses more on testing a "feat
 #### 8. Test that the custom file writer sends an e-mail out when it has created a new file
 Since we have decided not to make our own fakeable `System.IO.File` decorator, we have to make a test here that makes sure the file actually doesn't exist on disk before appending lines to it, to see if an e-mail is being sent out. We still need a fake `MailSender` for this though.
 
-
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-7...step-8
 
 ## Cleaning up the code
 

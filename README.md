@@ -3,13 +3,15 @@ A kata that I use to teach people how to convert legacy non-testable code to cle
 
 This kata does not teach about test conventions like AAA (Arrange Act Assert) or how to name your tests. It doesn't dictate whether to use BDD (Business Driven Development) style testing or similar. You still have to agree on your team how to structure that. The kata focuses on the "universal" things that apply to all systems and all teams.
 
+_Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstration purposes._
+
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
 
-_As a result of this, the code will look "odd" and perhaps even bad in some areas, but this is temporary (we'll get back to cleaning up in later steps once we have coverage)._
-
 ## Making the system testable with non-intrusive changes
 First we need to make our system testable, and the key point here is that all of the below changes can be performed in a non-intrusive manner (so that we don't break anything).
+
+_As a result of this, the code will look "odd" and perhaps even bad in some areas, but this is temporary (we'll get back to cleaning up in later steps once we have coverage)._
 
 To see the original non-testable code: https://github.com/ffMathy/testability-kata/blob/master/src/TestabilityKata/Program.cs
 

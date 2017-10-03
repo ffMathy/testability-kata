@@ -37,7 +37,9 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-3..
 
 ## Testing the system
 
-### 5. Test that the program sends an e-mail about it starting, when it starts up
+### Unit testing the `Program` class
+
+#### 5. Test that the program sends an e-mail about it starting, when it starts up
 Technically here we could create our own `FakeEmailSender` class, pass it to our `Program` instance when instantiating it, and then having this `FakeEmailSender` report what arguments its `SendMail` method was called with, and pass the test if these arguments are correct and the method was indeed called.
 
 However, for now we will skip all this and use `NSubstitute`, which can magically at runtime (it uses the `TypeBuilder` class in C# for this) create a new class that implements a given interface, and record calls and change its runtime behavior.
@@ -46,7 +48,7 @@ So to summarize, this step is about making a fake `IEmailSender` at runtime usin
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-4...step-5
 
-### 6. Test that the program logs an error if one of its dependencies throws one on startup
+#### 6. Test that the program logs an error if one of its dependencies throws one on startup
 Similarly to step 5, we here need to have `NSubstitute` create a fake dependency which throws an exception. We then run the program, and need to make sure that the `Logger`'s `Log` method was called with a log level of `Error`.
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-5...step-6

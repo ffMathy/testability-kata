@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestabilityKata", "TestabilityKata\TestabilityKata.csproj", "{538A1918-820C-4502-88E3-FE8820B2F6A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestabilityKata.Tests", "..\TestabilityKata.Tests\TestabilityKata.Tests.csproj", "{24D1E6BC-B964-4F06-9FEA-72AEBD43955A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestabilityKata.Tests", "TestabilityKata.Tests\TestabilityKata.Tests.csproj", "{24D1E6BC-B964-4F06-9FEA-72AEBD43955A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -99,7 +99,7 @@ In each test we are faking out several things and repeating ourselves over and o
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-8...step-9
 
 ### Step 10. Introduce an IOC (Inversion of Control) container for automatic dependency injection
-For this, step I recommend `Autofac`. For this step, have `Autofac` register specific interfaces as specific implementations (you can do this manually for each type or automatically for all types in the assembly), and have your brand new IOC container construct your `Program` instead - injecting all of its dependencies automatically. Also modify the tests so that they use the IOC container for their types too. **At first, this may seem counter-productive. We will see why it makes sense in step 11.**
+For this, step I recommend `Autofac`. Have `Autofac` register specific interfaces as specific implementations (you can do this manually for each type or automatically for all types in the assembly), and have your brand new IOC container construct your `Program` instead - injecting all of its dependencies automatically. Also modify the tests so that they use the IOC container for their types too. **At first, this may seem counter-productive. We will see why it makes sense in step 11.**
 
 _Note that the configuration of `Autofac` should ideally be turned into an `Autofac` module, so that it can be re-used by your test projects See the changeset below if you are in doubt of what this means._
 

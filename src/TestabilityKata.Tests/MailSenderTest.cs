@@ -14,10 +14,7 @@ namespace TestabilityKata.Tests
         [TestInitialize]
         public void Initialize()
         {
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
-            
-            var container = containerBuilder.Build();
+            var container = new UnitTestHelper().CreateIocContainerFor<IMailSender>();
             mailSender = container.Resolve<IMailSender>();
         }
 

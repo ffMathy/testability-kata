@@ -74,6 +74,16 @@ The reason we call this an integration test (even if we fake out the `EmailSende
 
 It is important to note that an integration test focuses more on testing a "feature" than testing a "specific function or unit". Therefore, instead of tests called `CallingSignUpInvokesMailSenderToSendActivationEmail`, we may have tests that look at it from a feature or business perspective, such as `WhenISignUpIGetAnActivationEmail`.
 
-#### 8. Test that the custom file writer sends an e-mail out when it
+#### 8. Test that the custom file writer sends an e-mail out when it has created a new file
+Since we have decided not to make our own fakeable `System.IO.File` decorator, we have to make a test here that makes sure the file actually doesn't exist on disk before appending lines to it, to see if an e-mail is being sent out. We still need a fake `MailSender` for this though.
+
+
 
 ## Cleaning up the code
+
+# Other useful information
+
+## UI tests vs integration tests vs unit tests
+The higher we go abstraction wise, the more maintenance is required (they get more fragile to changes), the slower the tests run and the more time they take to build and get running. However, unit tests don't make integration tests obsolete or the other way around. Both are needed to gain a healthy coverage in your system.
+
+![The test pyramid](https://martinfowler.com/bliki/images/testPyramid/test-pyramid.png "The test pyramid")

@@ -41,6 +41,7 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-3..
 It should be noted that these tests only focus on the "unique" scenarios where something needs to be handled differently from step to step. In general, both negative and positive outcomes of tests (throwing exceptions and/or passing) and most input scenarios should be tested.
 
 ### Unit testing the `Program` class
+This class is relatively important to have coverage on, as it is our main program. Similarly, it's a good idea to determine _the right areas to test_. Code coverage is not everything. It can be a distraction.
 
 #### 5. Test that the program sends an e-mail about it starting, when it starts up
 Technically here we could create our own `FakeEmailSender` class, pass it to our `Program` instance when instantiating it, and then having this `FakeEmailSender` report what arguments its `SendMail` method was called with, and pass the test if these arguments are correct and the method was indeed called.
@@ -54,13 +55,23 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-4..
 #### 6. Test that the program logs an error if one of its dependencies throws one on startup
 Similarly to step 5, we here need to have `NSubstitute` create a fake dependency which throws an exception. We then run the program, and need to make sure that the `Logger`'s `Log` method was called with a log level of `Error`.
 
+_Pro-tip: Similarly to how `NSubstitute` allows you to see if a specific method was called, it can also check if a method was *not* called. It would be a good idea to also cover the negative cases (testing that the `Log` method is *not* called when we *don't* throw an error), but we are skipping that for now._
+
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-5...step-6
 
 ### Unit testing the `MailSender` class
+It turns out that this class has no dependencies and was already testable all along - so this should be easy. No faking required here.
 
 #### 7. Test that the mail sender throws an exception if the e-mail is invalid (doesn't contain a `@`)
-It turns out that this class has no dependencies and was already testable all along - so this should be easy. No faking required here, and we can just invoke the method directly and put an `ExpectedExceptionAttribute` on our test to describe that it should _pass_ instead of failing when a specific exception is thrown.
+Here we can just invoke the method directly and put an `ExpectedExceptionAttribute` on our test to describe that it should _pass_ instead of failing when a specific exception is thrown.
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-6...step-7
+
+### Integration testing the `CustomFileWriter` class
+The reason we call this an integration test (even if we fake out the `EmailSender`), is because the `CustomFileWriter` actually accesses the file system. If we wanted to fake the file system out as well, we could make our own `CustomFile` class instead of the `System.IO.File` static reference. However, it is also important to remember that too many abstractions can lead to _low code readability_, which is very bad and often worse than the extra coverage we get.
+
+It is important to note that an integration test focuses more on testing a "feature" than testing a "specific function or unit". Therefore, instead of tests called `CallingSignUpInvokesMailSenderToSendActivationEmail`, we may have tests that look at it from a feature or business perspective, such as `WhenISignUpIGetAnActivationEmail`.
+
+#### 8. Test that the custom file writer sends an e-mail out when it
 
 ## Cleaning up the code

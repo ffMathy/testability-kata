@@ -7,15 +7,23 @@ These excercises are carefully thought through to allow them to be used on real 
 ## 1. Get rid of static sickness (convert statics to non-statics)
 This allows objects to actually have some form of "state". Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.
 
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
+
 ## 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
 Doing this is part of following the Open/Closed principle (the "O" in SOLID). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class. As an example, it allows us to provide our own `Logger` for our `Program`, or our own `MailSender` for our `Logger`, even if `Logger` or `MailSender` was a third party NuGet package that we couldn't change.
 
 _Note that the `Logger`'s `CustomFileWriter` class dependency has not been converted yet in this step - that will be done in the next step, since the constructor parameter for file name depends on the log level, which is only available by the time the `Log` method is called._
 
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-1...step-2
+
 ## 3. Apply manual dependency injection via factories for scenarios where creation of objects at runtime is required
 This is about continuing step 2, but for the `Logger`'s `CustomFileWriter` dependency. Since it is created in the `Log` method and the file name to log to depends on the log level given in this method, we can't just inject a `CustomFileWriter` into the constructor. Here, we instead create a `CustomFileWriterFactory` which we then inject, and this factory then injects the dependencies required for creating a `CustomFileWriter`.
+
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-2...step-3
 
 ## 4. Extract interfaces from classes and rely on what objects "do" - not what they "are"
 This is about applying the Dependency Inversion principle (the D in SOLID) and making our program more losely coupled. A dependency declared as a class is tightly coupled to "what that class is" (for instance that it's a `Tiger` class). If it was declared as an interface instead - for instance `IAnimal` which then had a `Bite` method, then it would instead just be coupled to "something that can bite".
 
 Within testability this allows us to make "fake" implementations of dependencies (for instance, a fake `MailSender` which doesn't actually send e-mails when running unit tests). More on this later when we get to writing the tests.
+
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-3...step-4

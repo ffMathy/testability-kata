@@ -15,10 +15,15 @@ namespace TestabilityKata.Tests
             var fakeMailSender = Substitute.For<IMailSender>();
             var fakeLogger = Substitute.For<ILogger>();
 
-            var program = new Program(
-                fakeLogger,
-                fakeMailSender);
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
 
+            containerBuilder.Register(c => fakeMailSender).As<IMailSender>();
+            containerBuilder.Register(c => fakeLogger).As<ILogger>();
+
+            var container = containerBuilder.Build();
+
+            var program = container.Resolve<IProgram>();
             program.Run();
 
             //we here make sure that SendMail was called

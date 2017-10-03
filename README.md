@@ -83,6 +83,38 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-7..
 
 # Other useful information
 
+## Beware of inheritance
+Inheritance (especially used entirely for code-reuse and not polymorphism) can easily break many of the SOLID principles, and make your code hard to test. A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. 
+
+The reason this is bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
+
+Instead, you should use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
+
+### Example of inheritance
+```public class Foo: Bar {
+  public void MainMethod() {
+    base.BaseMethod();
+  }
+}
+
+public class Bar {
+  public void BaseMethod() { }
+}```
+
+### Example of inheritance converted to composition
+```public class Foo
+{
+  Bar bar;
+
+  public void MainMethod() {
+    bar.BaseMethod();
+  }
+}
+
+public class Bar {
+  public void BaseMethod() { }
+}```
+
 ## UI tests vs integration tests vs unit tests
 The higher we go abstraction wise, the more maintenance is required (they get more fragile to changes), the slower the tests run and the more time they take to build and get running. However, unit tests don't make integration tests obsolete or the other way around. Both are needed to gain a healthy coverage in your system.
 

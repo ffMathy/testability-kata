@@ -37,4 +37,13 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-3..
 
 ## Testing the system
 
+### 5. Test that the program sends an e-mail about it starting, when it starts up
+Technically here we could create our own `FakeEmailSender` class, pass it to our `Program` instance when instantiating it, and then having this `FakeEmailSender` report what arguments its `SendMail` method was called with, and pass the test if these arguments are correct and the method was indeed called.
+
+However, for now we will skip all this and use `NSubstitute`, which can magically at runtime (it uses the `TypeBuilder` class in C# for this) create a new class that implements a given interface, and record calls and change its runtime behavior.
+
+So to summarize, this step is about making a fake `IEmailSender` at runtime using `NSubstitute`, passing this into the `Program` instance as a dependency, and then (after executing `Program.Run()`), we check that the `IEmailSender.SendMail` method was called with the right arguments.
+
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-4...step-5
+
 ## Cleaning up the code

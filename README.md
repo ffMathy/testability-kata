@@ -91,6 +91,8 @@ The reason this is bad for testability is that if you have 100 services and need
 Instead, you should use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
 
 ### Example of inheritance
+Here we have the `BaseMethod` defined on `Bar` for quick code-reuse. For each test we would now have to fake out and configure `BaseMethod` for all of our tests.
+
 ```public class Foo: Bar {
   public void MainMethod() {
     base.BaseMethod();
@@ -102,6 +104,8 @@ public class Bar {
 }```
 
 ### Example of inheritance converted to composition
+Note how we only lose 1 line of code! Think about this for a second - not bad for a more losely coupled system.
+
 ```public class Foo
 {
   Bar bar;

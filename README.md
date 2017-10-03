@@ -46,4 +46,9 @@ So to summarize, this step is about making a fake `IEmailSender` at runtime usin
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-4...step-5
 
+### 6. Test that the program logs an error if one of its dependencies throws one on startup
+Similarly to step 5, we here need to have `NSubstitute` create a fake dependency which throws an exception. We then run the program, and need to make sure that the `Logger`'s `Log` method was called with a log level of `Error`.
+
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-5...step-6
+
 ## Cleaning up the code

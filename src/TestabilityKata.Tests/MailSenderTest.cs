@@ -14,7 +14,7 @@ namespace TestabilityKata.Tests
         [TestInitialize]
         public void Initialize()
         {
-            var container = new UnitTestHelper().CreateIocContainerFor<IMailSender>();
+            var container = new TestHelper().CreateAutofakedIocContainerFor<IMailSender>();
             mailSender = container.Resolve<IMailSender>();
         }
 

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace TestabilityKata.Tests
 {
-    public class UnitTestHelper
+    public class TestHelper
     {
-        public IContainer CreateIocContainerFor<TClassBeingTested>()
+        public IContainer CreateAutofakedIocContainerFor<TClassBeingTested>()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());

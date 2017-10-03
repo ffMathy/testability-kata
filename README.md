@@ -59,4 +59,6 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-5..
 #### 7. Test that the mail sender throws an exception if the e-mail is invalid (doesn't contain a `@`)
 It turns out that this class has no dependencies and was already testable all along - so this should be easy. No faking required here, and we can just invoke the method directly and put an `ExpectedExceptionAttribute` on our test to describe that it should _pass_ instead of failing when a specific exception is thrown.
 
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-6...step-7
+
 ## Cleaning up the code

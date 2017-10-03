@@ -93,7 +93,8 @@ Instead, you should use composition (which by the way only makes you spend one e
 ### Example of inheritance
 Here we have the `BaseMethod` defined on `Bar` for quick code-reuse. For each test we would now have to fake out and configure `BaseMethod` for all of our tests.
 
-```public class Foo: Bar {
+```
+public class Foo: Bar {
   public void MainMethod() {
     base.BaseMethod();
   }
@@ -101,12 +102,14 @@ Here we have the `BaseMethod` defined on `Bar` for quick code-reuse. For each te
 
 public class Bar {
   public void BaseMethod() { }
-}```
+}
+```
 
 ### Example of inheritance converted to composition
 Note how we only lose 1 line of code! Think about this for a second - not bad for a more losely coupled system.
 
-```public class Foo
+```
+public class Foo
 {
   Bar bar;
 
@@ -117,7 +120,8 @@ Note how we only lose 1 line of code! Think about this for a second - not bad fo
 
 public class Bar {
   public void BaseMethod() { }
-}```
+}
+```
 
 ## UI tests vs integration tests vs unit tests
 The higher we go abstraction wise, the more maintenance is required (they get more fragile to changes), the slower the tests run and the more time they take to build and get running. However, unit tests don't make integration tests obsolete or the other way around. Both are needed to gain a healthy coverage in your system.

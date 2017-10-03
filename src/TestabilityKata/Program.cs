@@ -51,14 +51,11 @@ namespace TestabilityKata
         //see the next step for that.
 
         private readonly MailSender mailSender;
-        private readonly Logger logger;
 
         public Logger(
-            MailSender mailSender,
-            Logger logger)
+            MailSender mailSender)
         {
             this.mailSender = mailSender;
-            this.logger = logger;
         }
 
         public void Log(LogLevel logLevel, string logText)
@@ -69,7 +66,7 @@ namespace TestabilityKata
             {
 
                 //also log to file
-                var writer = new CustomFileWriter(logger, @"C:\" + logLevel + "-annoying-log-file.txt");
+                var writer = new CustomFileWriter(this, @"C:\" + logLevel + "-annoying-log-file.txt");
                 writer.AppendLine(logText);
 
                 //send e-mail about error

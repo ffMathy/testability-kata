@@ -52,7 +52,7 @@ However, for now we will skip all this and use `NSubstitute`, which can magicall
 
 So to summarize, this step is about making a fake `IEmailSender` at runtime using `NSubstitute`, passing this into the `Program` instance as a dependency, and then (after executing `Program.Run()`), we check that the `IEmailSender.SendMail` method was called with the right arguments.
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-4...step-5
 
@@ -61,7 +61,7 @@ Similarly to step 5, we here need to have `NSubstitute` create a fake dependency
 
 _Pro-tip: Similarly to how `NSubstitute` allows you to see if a specific method was called, it can also check if a method was *not* called. It would be a good idea to also cover the negative cases (testing that the `Log` method is *not* called when we *don't* throw an error), but we are skipping that for now._
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-5...step-6
 
@@ -71,7 +71,7 @@ It turns out that this class has no dependencies and was already testable all al
 #### Step 7. Test that the mail sender throws an exception if the e-mail is invalid (doesn't contain a `@`)
 Here we can just invoke the method directly and put an `ExpectedExceptionAttribute` on our test to describe that it should _pass_ instead of failing when a specific exception is thrown.
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-6...step-7
 
@@ -85,23 +85,23 @@ Since we have decided not to make our own fakeable `System.IO.File` decorator, w
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-7...step-8
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 ## Cleaning up the code
 
 ### Step 9. Re-use the "setup code" for all tests so that fakes are defined as fields on the test class
 In each test we are faking out several things and repeating ourselves over and over, violating the DRY principle (Don't Repeat Yourself). We should unify the generic setup logic for each test into a test initialization method.
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-8...step-9
 
 ### Step 10. Introduce an IOC (Inversion of Control) container for automatic dependency injection
-For this, step I recommend `Autofac`. For this step, have `Autofac` register specific interfaces as specific implementations (you can do this manually for each type or automatically for all types in the assembly), and have your brand new IOC container construct your `Program` instead - injecting all of its dependencies automatically. Also modify the tests so that they use the IOC container for their types too.
+For this, step I recommend `Autofac`. For this step, have `Autofac` register specific interfaces as specific implementations (you can do this manually for each type or automatically for all types in the assembly), and have your brand new IOC container construct your `Program` instead - injecting all of its dependencies automatically. Also modify the tests so that they use the IOC container for their types too. **At first, this may seem counter-productive. We will see why it makes sense in step 11.**
 
 _Note that the configuration of `Autofac` should ideally be turned into an `Autofac` module, so that it can be re-used by your test projects See the changeset below if you are in doubt of what this means._
 
-*After this step, run all tests to make sure you haven't broken anything.*
+**After this step, run all tests to make sure you haven't broken anything.**
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-9...step-10
 

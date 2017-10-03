@@ -9,21 +9,30 @@ namespace TestabilityKata.Tests
     [TestClass]
     public class ProgramTest
     {
-        [TestMethod]
-        public void ProgramSendsEmailWhenStartingUp()
-        {
-            var fakeMailSender = Substitute.For<IMailSender>();
-            var fakeLogger = Substitute.For<ILogger>();
+        private IMailSender fakeMailSender;
+        private ILogger fakeLogger;
 
+        private IProgram program;
+
+        [TestInitialize]
+        public void Initialize()
+        {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
+
+            fakeMailSender = Substitute.For<IMailSender>();
+            fakeLogger = Substitute.For<ILogger>();
 
             containerBuilder.Register(c => fakeMailSender).As<IMailSender>();
             containerBuilder.Register(c => fakeLogger).As<ILogger>();
 
             var container = containerBuilder.Build();
+            program = container.Resolve<IProgram>();
+        }
 
-            var program = container.Resolve<IProgram>();
+        [TestMethod]
+        public void ProgramSendsEmailWhenStartingUp()
+        {
             program.Run();
 
             //we here make sure that SendMail was called
@@ -39,13 +48,6 @@ namespace TestabilityKata.Tests
         [TestMethod]
         public void ProgramLogsErrorWhenExceptionIsThrown()
         {
-            var fakeMailSender = Substitute.For<IMailSender>();
-            var fakeLogger = Substitute.For<ILogger>();
-
-            var program = new Program(
-                fakeLogger,
-                fakeMailSender);
-
             //we here make the EmailSender's SendMail throw an exception no 
             //matter what arguments it was called with.
             fakeMailSender

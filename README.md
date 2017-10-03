@@ -105,6 +105,15 @@ _Note that the configuration of `Autofac` should ideally be turned into an `Auto
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-9...step-10
 
+### Step 11. Introduce `FluffySpoon.Testing.Autofake` for automatic dependency faking
+By introducing auto-faking and extracting the logic for creating the container into a separate class, we can automatically scan for a class' dependencies in the constructor and register them as fakes. This is great, because if a new dependency is added to a class, our existing tests won't break, and they will still compile.
+
+_You may think "why are we automatically faking all dependencies? What if I want to test the interaction between a class and its real dependencies?" - well, in that case we're talking about an integration test, and not a unit test. Autofaking is *not* useful for integration tests._
+
+*After this step, run all tests to make sure you haven't broken anything.*
+
+To see this change: https://github.com/ffMathy/testability-kata/compare/step-10...step-11
+
 # Other useful information
 
 ## Beware of inheritance

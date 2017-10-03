@@ -7,6 +7,8 @@ These excercises are carefully thought through to allow them to be used on real 
 ## Making the system testable with non-intrusive changes
 First we need to make our system testable, and the key point here is that all of the below changes can be performed in a non-intrusive manner (so that we don't break anything).
 
+To see the original non-testable code: https://github.com/ffMathy/testability-kata/blob/master/src/TestabilityKata/Program.cs
+
 ### 1. Get rid of static sickness (convert statics to non-statics)
 This allows objects to actually have some form of "state". Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.
 

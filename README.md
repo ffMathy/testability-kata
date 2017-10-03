@@ -36,6 +36,7 @@ Within testability this allows us to make "fake" implementations of dependencies
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-3...step-4
 
 ## Testing the system
+It should be noted that these tests only focus on the "unique" scenarios where something needs to be handled differently from step to step. In general, both negative and positive outcomes of tests (throwing exceptions and/or passing) and most input scenarios should be tested.
 
 ### Unit testing the `Program` class
 

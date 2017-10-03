@@ -16,7 +16,7 @@ _As a result of this, the code will look "odd" and perhaps even bad in some area
 To see the original non-testable code: https://github.com/ffMathy/testability-kata/blob/master/src/TestabilityKata/Program.cs
 
 ### Step 1. Get rid of static sickness (convert statics to non-statics)
-This allows objects to actually have some form of "state". Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.
+This allows objects to actually have some form of "state" that is scoped to themselves and their own lifetime rather than being application-scoped. Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.
 
 _If your static dependency has too many references, it can be hard to "just" convert into non-statics. In this case, take your existing static method (let's say it's called `SendMail`) and rename it into `SendMailStatic` so that all references will point to this method for backward compatibility. Then take the body of this method and move it into a new non-static method called `SendMail`. Finally, change the `SendMailStatic` method so that it instantiates a new instance of itself and calls the non-static `SendMail` function on that instance. This allows you to take "baby steps" in getting rid of static sickness instead of doing it all. Just remember that static functions can't be faked out._
 

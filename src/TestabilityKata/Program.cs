@@ -50,9 +50,6 @@ namespace TestabilityKata
 
     public class Logger : ILogger
     {
-        //we can't do CustomFileWriter yet, because its file name depends on the log level.
-        //see the next step for that.
-
         private readonly IMailSender mailSender;
         private readonly ICustomFileWriterFactory customFileWriterFactory;
 

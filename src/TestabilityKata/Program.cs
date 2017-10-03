@@ -9,7 +9,9 @@ namespace TestabilityKata
         {
             new Program(
                     new Logger(
-                        new MailSender()),
+                        new MailSender(),
+                        new CustomFileWriterFactory(
+                            new MailSender())),
                     new MailSender())
                 .Run();
         }
@@ -51,11 +53,14 @@ namespace TestabilityKata
         //see the next step for that.
 
         private readonly MailSender mailSender;
+        private readonly CustomFileWriterFactory customFileWriterFactory;
 
         public Logger(
-            MailSender mailSender)
+            MailSender mailSender,
+            CustomFileWriterFactory customFileWriterFactory)
         {
             this.mailSender = mailSender;
+            this.customFileWriterFactory = customFileWriterFactory;
         }
 
         public void Log(LogLevel logLevel, string logText)
@@ -66,7 +71,7 @@ namespace TestabilityKata
             {
 
                 //also log to file
-                var writer = new CustomFileWriter(mailSender, @"C:\" + logLevel + "-annoying-log-file.txt");
+                var writer = customFileWriterFactory.Create(@"C:\" + logLevel + "-annoying-log-file.txt");
                 writer.AppendLine(logText);
 
                 //send e-mail about error
@@ -85,6 +90,24 @@ namespace TestabilityKata
 
             //for the sake of simplicity, this actually doesn't send an e-mail right now - but let's pretend it does.
             Console.WriteLine("Sent e-mail to " + recipient + " with content \"" + content + "\"");
+        }
+    }
+
+    public class CustomFileWriterFactory
+    {
+        private readonly MailSender mailSender;
+
+        public CustomFileWriterFactory(
+            MailSender mailSender)
+        {
+            this.mailSender = mailSender;
+        }
+
+        public CustomFileWriter Create(string filePath)
+        {
+            return new CustomFileWriter(
+                mailSender, 
+                filePath);
         }
     }
 

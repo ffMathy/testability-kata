@@ -6,6 +6,8 @@ This kata does not teach about test conventions like AAA (Arrange Act Assert) or
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
 
+_As a result of this, the code will look "odd" and perhaps even bad in some areas, but this is temporary (we'll get back to cleaning up in later steps once we have coverage)._
+
 ## Making the system testable with non-intrusive changes
 First we need to make our system testable, and the key point here is that all of the below changes can be performed in a non-intrusive manner (so that we don't break anything).
 

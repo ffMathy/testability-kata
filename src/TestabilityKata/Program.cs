@@ -3,7 +3,7 @@ using System.IO;
 
 namespace TestabilityKata
 {
-    public class Program
+    public class Program : IProgram
     {
         public static void Main(string[] args)
         {
@@ -16,12 +16,12 @@ namespace TestabilityKata
                 .Run();
         }
 
-        private readonly Logger logger;
-        private readonly MailSender mailSender;
+        private readonly ILogger logger;
+        private readonly IMailSender mailSender;
 
         public Program(
-            Logger logger,
-            MailSender mailSender)
+            ILogger logger,
+            IMailSender mailSender)
         {
             this.logger = logger;
             this.mailSender = mailSender;
@@ -47,17 +47,17 @@ namespace TestabilityKata
         Error
     }
 
-    public class Logger
+    public class Logger : ILogger
     {
         //we can't do CustomFileWriter yet, because its file name depends on the log level.
         //see the next step for that.
 
-        private readonly MailSender mailSender;
-        private readonly CustomFileWriterFactory customFileWriterFactory;
+        private readonly IMailSender mailSender;
+        private readonly ICustomFileWriterFactory customFileWriterFactory;
 
         public Logger(
-            MailSender mailSender,
-            CustomFileWriterFactory customFileWriterFactory)
+            IMailSender mailSender,
+            ICustomFileWriterFactory customFileWriterFactory)
         {
             this.mailSender = mailSender;
             this.customFileWriterFactory = customFileWriterFactory;
@@ -81,7 +81,7 @@ namespace TestabilityKata
         }
     }
 
-    public class MailSender
+    public class MailSender : IMailSender
     {
         public void SendMail(string recipient, string content)
         {
@@ -93,17 +93,17 @@ namespace TestabilityKata
         }
     }
 
-    public class CustomFileWriterFactory
+    public class CustomFileWriterFactory : ICustomFileWriterFactory
     {
-        private readonly MailSender mailSender;
+        private readonly IMailSender mailSender;
 
         public CustomFileWriterFactory(
-            MailSender mailSender)
+            IMailSender mailSender)
         {
             this.mailSender = mailSender;
         }
 
-        public CustomFileWriter Create(string filePath)
+        public ICustomFileWriter Create(string filePath)
         {
             return new CustomFileWriter(
                 mailSender, 
@@ -111,14 +111,14 @@ namespace TestabilityKata
         }
     }
 
-    public class CustomFileWriter
+    public class CustomFileWriter : ICustomFileWriter
     {
-        private readonly MailSender mailSender;
+        private readonly IMailSender mailSender;
 
         public string FilePath { get; }
 
         public CustomFileWriter(
-            MailSender mailSender,
+            IMailSender mailSender,
             string filePath)
         {
             this.mailSender = mailSender;

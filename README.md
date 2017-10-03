@@ -116,6 +116,33 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-10.
 
 # Other useful information
 
+## SOLID within testability
+
+### Single Responsibility Principle (SRP)
+**TL;DR:** Classes should do just one thing. Make sure your classes _only have one reason to change_.
+
+**Testability aspect:** Decreases the amount of tests that need to be written to test the same things. Reduces duplication. Reduces chance of tests breaking over time when your system changes.
+
+### Open/Closed Principle (OCP)
+**TL;DR:** Objects should be open for extension, but closed for modification. You should be able to control "how" a class uses its dependencies without changing that class' code.
+
+**Testability aspect:** Allows us to fake dependencies of a class, and recording the class' usage of these dependencies in unit tests. This way, we only test the "unit" itself, and not everything it interacts with - this would be covered by individual unit tests as well.
+
+### Liskov Substitution Principle (LSP)
+**TL;DR:** We should be able to substitute any object with a different object implementing the same interface, without causing nasty side-effects. _If it looks like a duck, quacks like a duck, but needs batteries, you probably have the wrong abstraction_.
+
+**Testability aspect:** This makes it possible for us to substitute and fake any dependency of a class, and count on that it won't change the flow of the program into something bad.
+
+### Interface Segregation Principle (ISP)
+**TL;DR:** An interface should have as few methods and properties as possible, while still living up to its responsibility. A lot of small interfaces is often easier to test than a few large ones - and a class can implement many interfaces.
+
+**Testability aspect:** More atomic interfaces may lead to more atomic tests. We can also decide to remove an interface implementation from an object without it requiring a big redesign of our tests.
+
+### Dependency Inversion Principle (DIP)
+**TL;DR:** A class should not care about what its dependencies "are", but what they "do". Depend on interfaces (what something "does"), not classes (what something "is").
+
+**Testability aspect:** By depending on interfaces (something that "does" something) we can substitute that functionality out and fake it for a class' dependencies.
+
 ## Beware of inheritance
 Inheritance (especially used entirely for code-reuse and not polymorphism) can easily break a large part of the SOLID principles, and make your code hard to test. 
 

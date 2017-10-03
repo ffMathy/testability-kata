@@ -21,6 +21,7 @@ namespace TestabilityKata.Tests
             //we need to get to the point where a new file is created.
             if(File.Exists(testFilePath))
             {
+                File.SetAttributes(testFilePath, FileAttributes.Normal);
                 File.Delete(testFilePath);
             }
 

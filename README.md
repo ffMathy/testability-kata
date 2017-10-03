@@ -12,5 +12,5 @@ Doing this is part of following the Open/Closed principle (the "O" in SOLID - se
 
 _Note that the `Logger`'s `CustomFileWriter` class dependency has not been converted yet in this step - that will be done in the next step, since the constructor parameter for file name depends on the log level, which is only available by the time the `Log` method is called._
 
-## 3. Apply manual dependency injection via factories for scenarios where creation of objects is required
+## 3. Apply manual dependency injection via factories for scenarios where creation of objects at runtime is required
 This is about continuing step 2, but for the `Logger`'s `CustomFileWriter` dependency. Since it is created in the `Log` method and the file name to log to depends on the log level given in this method, we can't just inject a `CustomFileWriter` into the constructor. Here, we instead create a `CustomFileWriterFactory` which we then inject, and this factory then injects the dependencies required for creating a `CustomFileWriter`.

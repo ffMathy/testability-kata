@@ -3,7 +3,7 @@ A kata that I use to teach people how to convert legacy non-testable code to 100
 
 This kata does not teach about test conventions like AAA (Arrange Act Assert) or how to name your tests. It doesn't dictate whether to use BDD (Business Driven Development) style testing or similar. You still have to agree on your team how to structure that. The kata focuses on the "universal" things that apply to all systems and all teams.
 
-_Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstration purposes._
+**This is not a clean code kata! Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstration purposes.**
 
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).

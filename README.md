@@ -5,9 +5,6 @@ This kata does not teach about test conventions like AAA (Arrange Act Assert) or
 
 _Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstration purposes._
 
-# Who am I?
-Just a regular geek: https://www.linkedin.com/in/mathiaslorenzen/
-
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
 
@@ -141,7 +138,7 @@ _You may think "why are we automatically faking all dependencies? What if I want
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-10...step-11
 
-# Other useful information
+# Other information
 
 ## SOLID within testability
 
@@ -220,3 +217,6 @@ public class Bar {
 The higher we go abstraction wise, the more maintenance is required (they get more fragile to changes), the slower the tests run and the more time they take to build and get running. However, unit tests don't make integration tests obsolete or the other way around. Both are needed to gain a healthy coverage in your system.
 
 ![The test pyramid](https://martinfowler.com/bliki/images/testPyramid/test-pyramid.png "The test pyramid")
+
+## Who am I?
+Just a regular geek: https://www.linkedin.com/in/mathiaslorenzen/

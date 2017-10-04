@@ -179,7 +179,7 @@ More information: https://en.wikipedia.org/wiki/Composition_over_inheritance
 ### Example of inheritance
 Here we have the `BaseMethod` defined on `Bar` for quick code-reuse. For each test we would now have to fake out and configure `BaseMethod` for all of our tests.
 
-```
+```csharp
 public class Foo: Bar {
   public void MainMethod() {
     base.BaseMethod();
@@ -194,7 +194,7 @@ public class Bar {
 ### Example of inheritance converted to composition
 Note how we only lose very few lines of code! Think about this for a second - not bad for a more losely coupled system.
 
-```
+```csharp
 public class Foo
 {
   Bar bar;

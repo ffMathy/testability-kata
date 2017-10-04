@@ -1,5 +1,5 @@
 # testability-kata
-A kata that I use to teach people how to convert legacy non-testable code to cleaner, 100% testable code. The different branches contain different "phases". The last phase has all tests implemented.
+A kata that I use to teach people how to convert legacy non-testable code to 100% testable code. The different branches contain different "phases". The last phase has all tests implemented.
 
 This kata does not teach about test conventions like AAA (Arrange Act Assert) or how to name your tests. It doesn't dictate whether to use BDD (Business Driven Development) style testing or similar. You still have to agree on your team how to structure that. The kata focuses on the "universal" things that apply to all systems and all teams.
 

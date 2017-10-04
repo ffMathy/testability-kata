@@ -15,12 +15,22 @@ _As a result of this, the code will look "odd" and perhaps even bad in some area
 
 To see the original non-testable code: https://github.com/ffMathy/testability-kata/blob/master/src/TestabilityKata/Program.cs
 
+**Important notes before you throw up**
+- Yes, there are magic strings several places. This is on purpose to make the kata small and easy to understand. This kata demonstrates testability, not clean code.
+- No, we don't log exception details in the `Logger`. This is not supposed to be a real "production-ready" logger. It is just a class demonstrating testability, and is by no means ready for production code.
+- Yes, all classes are defined in one file. Again, to make it easier to understand for everyone - not recommended for production code.
+- Yes, we instantiate a `CustomFileWriter` per `Logger.Log` call because the file name of the `CustomFileWriter` is based on the log level given as argument to that method, and because the `CustomFileWriter` requires it in its constructor. This could easily be optimized away, but the point of this code is again to demonstrate testability in all aspects and _object composition_ that could be found in production.
+
 ### Step 1. Get rid of static sickness (convert statics to non-statics)
 This allows objects to actually have some form of "state" that is scoped to themselves and their own lifetime rather than being application-scoped. Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.
 
 _If your static dependency has too many references, it can be hard to "just" convert into non-statics. In this case, take your existing static method (let's say it's called `SendMail`) and rename it into `SendMailStatic` so that all references will point to this method for backward compatibility. Then take the body of this method and move it into a new non-static method called `SendMail`. Finally, change the `SendMailStatic` method so that it instantiates a new instance of itself and calls the non-static `SendMail` function on that instance. This allows you to take "baby steps" in getting rid of static sickness instead of doing it all. Just remember that static functions can't be faked out._
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
+
+**Important notes before you throw up**
+- This is a temporary step - don't worry. We will clean up later.
+- Yes we instantiate extra objects we don't re-use. Well, turns out this is actually how an IOC container does dependency injection internally. Remember, we can create millions of objects per second, and each object only allocates roughly 10 bytes of memory, for the duration of the object's lifetime, which is brief, after at which point the garbage collector collects it for us. _This is not where your performance problem is located unless you are in some application like a game where nano-optimization is important_.
 
 ### Step 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
 Doing this is part of following the Open/Closed principle (the "O" in SOLID). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class. As an example, it allows us to provide our own `Logger` for our `Program`, or our own `MailSender` for our `Logger`, even if `Logger` or `MailSender` was a third party NuGet package that we couldn't change.
@@ -34,12 +44,18 @@ This is about continuing step 2, but for the `Logger`'s `CustomFileWriter` depen
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-2...step-3
 
+**Important notes before you throw up**
+- Yes, we create a whole `CustomFileWriterFactory` here to create `CustomFileWriter` instances. We could have used a `Func<T>`, but I wanted this code to be readable and understandable by all levels of programming. Once again, this kata focuses on testability, not clean code.
+
 ### Step 4. Extract interfaces from classes and rely on what objects "do" - not what they "are"
 This is about applying the Dependency Inversion principle (the D in SOLID) and making our program more losely coupled. A dependency declared as a class is tightly coupled to "what that class is" (for instance that it's a `Tiger` class). If it was declared as an interface instead - for instance `IAnimal` which then had a `Bite` method, then it would instead just be coupled to "something that can bite".
 
 Within testability this allows us to make "fake" implementations of dependencies (for instance, a fake `MailSender` which doesn't actually send e-mails when running unit tests). More on this later when we get to writing the tests.
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-3...step-4
+
+**Important notes before you throw up**
+- Yes, while following the Dependency Inversion principle, we don't follow it _exactly_ by the book here. If we did, we most likely would compose many small interfaces per class, that each defines the minimum methods that make that interface live up to its responsibility. Once again, this is not the case because I wanted the kata to be readable and focus on testability, not necessarily clean code. The important part for the testability here is to be backed by interfaces - not that they are small and clean. Besides, the classes we are dealing with are small in the first place, and may not make sense to split up.
 
 ## Testing the system
 It should be noted that these tests only focus on the "unique" scenarios where something needs to be handled differently from step to step. In general, both negative and positive outcomes of tests (throwing exceptions and/or passing) and most input scenarios should be tested.
@@ -90,6 +106,10 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-7..
 *After this step, run all tests to make sure you haven't broken anything.*
 
 ## Cleaning up the code
+
+**Important notes before you throw up**
+- In this phase we don't clean up the magic strings or optimize the program flow. This is on purpose, to keep the kata very small and understandable. We're not trying to teach clean code - we're trying to teach testability.
+- The steps below focus on cleaning the test code primarily.
 
 ### Step 9. Re-use the "setup code" for all tests so that fakes are defined as fields on the test class
 In each test we are faking out several things and repeating ourselves over and over, violating the DRY principle (Don't Repeat Yourself). We should unify the generic setup logic for each test into a test initialization method.

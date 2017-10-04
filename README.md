@@ -171,7 +171,9 @@ Inheritance (especially used entirely for code-reuse and not polymorphism) can e
 
 A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. The reason this is bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
 
-Instead, you should use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
+Instead, you could use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
+
+More information: https://en.wikipedia.org/wiki/Composition_over_inheritance
 
 ### Example of inheritance
 Here we have the `BaseMethod` defined on `Bar` for quick code-reuse. For each test we would now have to fake out and configure `BaseMethod` for all of our tests.
@@ -189,12 +191,16 @@ public class Bar {
 ```
 
 ### Example of inheritance converted to composition
-Note how we only lose 1 line of code! Think about this for a second - not bad for a more losely coupled system.
+Note how we only lose very few lines of code! Think about this for a second - not bad for a more losely coupled system.
 
 ```
 public class Foo
 {
   Bar bar;
+  
+  public Foo(Bar bar) {
+    this.bar = bar;
+  }
 
   public void MainMethod() {
     bar.BaseMethod();

@@ -5,6 +5,9 @@ This kata does not teach about test conventions like AAA (Arrange Act Assert) or
 
 _Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstration purposes._
 
+# Who am I?
+Just a regular geek: https://www.linkedin.com/in/mathiaslorenzen/
+
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
 

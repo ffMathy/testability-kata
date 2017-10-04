@@ -31,6 +31,7 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
 **Important notes before you throw up**
 - This is a temporary step - don't worry. We will clean up later.
 - Yes we instantiate extra objects we don't re-use. Well, turns out this is actually how an IOC container does dependency injection internally. Remember, we can create millions of objects per second, and each object only allocates roughly 10 bytes of memory, for the duration of the object's lifetime, which is brief, after at which point the garbage collector collects it for us. _This is not where your performance problem is located unless you are in some application like a game where nano-optimization is important_.
+- Yes, I know the Open/Closed principle (O in SOLID) is based on inheritance. I said inheritance for code re-use breaks _many_ of the SOLID principles - not all. OCP is an exception.
 
 ### Step 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
 Doing this is part of following the Open/Closed principle (the "O" in SOLID). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class. As an example, it allows us to provide our own `Logger` for our `Program`, or our own `MailSender` for our `Logger`, even if `Logger` or `MailSender` was a third party NuGet package that we couldn't change.

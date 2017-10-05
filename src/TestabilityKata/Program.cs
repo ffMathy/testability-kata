@@ -7,12 +7,12 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
+            var mailSender = new MailSender();
             new Program(
                     new Logger(
-                        new MailSender(),
-                        new CustomFileWriterFactory(
-                            new MailSender())),
-                    new MailSender())
+                        mailSender,
+                        new CustomFileWriterFactory(mailSender)),
+                    mailSender)
                 .Run();
         }
 

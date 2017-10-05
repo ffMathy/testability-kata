@@ -20,7 +20,6 @@ To see the original non-testable code: https://github.com/ffMathy/testability-ka
 - No, we don't log exception details in the `Logger`. This is not supposed to be a real "production-ready" logger. It is just a class demonstrating testability, and is by no means ready for production code.
 - Yes, all classes are defined in one file. Again, to make it easier to understand for everyone - not recommended for production code.
 - Yes, we instantiate a `CustomFileWriter` per `Logger.Log` call because the file name of the `CustomFileWriter` is based on the log level given as argument to that method, and because the `CustomFileWriter` requires it in its constructor. This could easily be optimized away, but the point of this code is again to demonstrate testability in all aspects and _object composition_ that could be found in production.
-- Yes, there are race conditions especially in the `CustomFileWriter`. Once again, this is not supposed to be production code or demonstrate clean code. It only focuses on testability.
 
 ### Step 1. Get rid of static sickness (convert statics to non-statics)
 This allows objects to actually have some form of "state" that is scoped to themselves and their own lifetime rather than being application-scoped. Essentially a static class is just "some functions and some global state operating somewhere" in your program. Statics also rarely actually save a lot of lines of code, and they can't be faked out.

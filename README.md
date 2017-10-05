@@ -30,7 +30,6 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
 
 **Important notes before you throw up**
 - This is a temporary step - don't worry. We will clean up later.
-- Yes we instantiate extra objects we don't re-use. Well, turns out this is actually how an IOC container does dependency injection internally. Remember, we can create millions of objects per second, and each object only allocates roughly 10 bytes of memory, for the duration of the object's lifetime, which is brief, after at which point the garbage collector collects it for us. _This is not where your performance problem is located unless you are in some application like a game where nano-optimization is important_.
 - Yes, I know the Open/Closed principle (O in SOLID) is based on inheritance. I said inheritance for code re-use breaks _many_ of the SOLID principles - not all. OCP is an exception.
 
 ### Step 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
@@ -110,7 +109,7 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-7..
 
 **Important notes before you throw up**
 - In this phase we don't clean up the magic strings or optimize the program flow. This is on purpose, to keep the kata very small and understandable. We're not trying to teach clean code - we're trying to teach testability.
-- The steps below focus on cleaning the test code primarily.
+- The steps below focus on cleaning the test code primarily, not the code of the main program as much.
 
 ### Step 9. Re-use the "setup code" for all tests so that fakes are defined as fields on the test class
 In each test we are faking out several things and repeating ourselves over and over, violating the DRY principle (Don't Repeat Yourself). We should unify the generic setup logic for each test into a test initialization method.

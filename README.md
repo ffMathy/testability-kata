@@ -3,7 +3,7 @@ A kata that I use to teach people how to convert legacy non-testable code to 100
 
 This kata does not teach about test conventions like AAA (Arrange Act Assert) or how to name your tests. It doesn't dictate whether to use BDD (Business Driven Development) style testing or similar. You still have to agree on your team how to structure that. The kata focuses on the "universal" things that apply to all systems and all teams.
 
-**This is not a clean code kata! Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstrating testability alone.**
+**This is not a clean code kata! Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstrating testability alone. Yes, clean code goes in hand with testable code, but I have decided to only clean up the minimal amount to still be able to demonstrate testability. I may decide to make a clean code kata later.**
 
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
@@ -171,7 +171,7 @@ A classic example is having some `UserService` which inherits from a `BaseServic
 
 Instead, you could use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
 
-**Note that this only applies if your base class is only there for code-reuse and not polymorphism. If extracting the class into a separate class would break encapsulation by making your protected fields public or if the base class is small enough, it may not worth it.**
+_Note that this only applies if your base class is only there for code-reuse and not polymorphism. If extracting the class into a separate class would break encapsulation by making your protected fields public or if the base class is small enough, it may not worth it._
 
 More information: https://en.wikipedia.org/wiki/Composition_over_inheritance
 

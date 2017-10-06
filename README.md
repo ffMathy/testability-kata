@@ -30,7 +30,6 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
 
 **Important notes before you throw up**
 - This is a temporary step - don't worry. We will clean up later.
-- Yes, I know the Open/Closed principle (O in SOLID) is based on inheritance. I said inheritance for code re-use breaks _many_ of the SOLID principles - not all. OCP is an exception.
 
 ### Step 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
 Doing this is part of following the Open/Closed principle (the "O" in SOLID). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class. As an example, it allows us to provide our own `Logger` for our `Program`, or our own `MailSender` for our `Logger`, even if `Logger` or `MailSender` was a third party NuGet package that we couldn't change.
@@ -166,11 +165,13 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-10.
 **Testability aspect:** By depending on interfaces (something that "does" something) we can substitute that functionality out and fake it for a class' dependencies.
 
 ## Beware of inheritance
-Inheritance (especially used entirely for code-reuse and not polymorphism) can easily break a large part of the SOLID principles, and make your code hard to test. 
+Inheritance (especially used entirely for code-reuse and not polymorphism) can potentially break a large part of the SOLID principles (except Open/Closed principle, which can be based on inheritance), and make your code harder to test. 
 
-A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. The reason this is bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
+A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. The reason this _can be_ bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
 
 Instead, you could use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
+
+**Note that this only applies if your base class is only there for code-reuse and not polymorphism. If extracting the class into a separate class would break encapsulation by making your protected fields public or if the base class is small enough, it may not worth it.**
 
 More information: https://en.wikipedia.org/wiki/Composition_over_inheritance
 

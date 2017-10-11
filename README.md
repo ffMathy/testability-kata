@@ -93,7 +93,7 @@ Here we can just invoke the method directly and put an `ExpectedExceptionAttribu
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-6...step-7
 
 ### Integration testing the `CustomFileWriter` class
-The reason we call this an integration test (even if we fake out the `EmailSender`), is because the `CustomFileWriter` actually accesses the file system. If we wanted to fake the file system out as well, we could make our own `CustomFile` class instead of the `System.IO.File` static reference. However, it is also important to remember that too many abstractions can lead to _low code readability_, which is very bad and often worse than the extra coverage we get.
+The reason we call this an integration test (even if we fake out the `EmailSender`), is because the `CustomFileWriter` actually accesses the file system. If we wanted to fake the file system out as well, we could make our own `CustomFile` class instead of the `System.IO.File` static reference. However, it is also important to remember that too many abstractions can lead to _low code readability_, which is very bad and often worse than the extra coverage we miss out on.
 
 It is important to note that an integration test focuses more on testing a "feature" than testing a "specific function or unit". Therefore, instead of tests called `CallingSignUpInvokesMailSenderToSendActivationEmail`, we may have tests that look at it from a feature or business perspective, such as `WhenISignUpIGetAnActivationEmail`.
 

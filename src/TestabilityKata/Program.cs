@@ -108,7 +108,7 @@ namespace TestabilityKata
             lock(typeof(CustomFileWriter)) {
                 if (!File.Exists(FilePath))
                 {
-					mailSender.SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
+                    mailSender.SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
                     File.WriteAllText(FilePath, "");
                 }
 

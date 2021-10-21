@@ -13,7 +13,7 @@ namespace TestabilityKata
 
             var container = containerBuilder.Build();
             container
-                .Resolve<Program>()
+                .Resolve<IProgram>()
                 .Run();
         }
 

@@ -24,13 +24,13 @@ namespace TestabilityKata
         }
     }
 
-    enum LogLevel
+    public enum LogLevel
     {
         Warning,
         Error
     }
 
-    class Logger
+    public class Logger
     {
         public void Log(LogLevel logLevel, string logText)
         {
@@ -50,7 +50,7 @@ namespace TestabilityKata
         }
     }
 
-    class MailSender
+    public class MailSender
     {
         public void SendMail(string recipient, string content)
         {
@@ -62,7 +62,7 @@ namespace TestabilityKata
         }
     }
 
-    class CustomFileWriter
+    public class CustomFileWriter
     {
         public string FilePath { get; }
 

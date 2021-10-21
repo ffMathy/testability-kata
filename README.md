@@ -1,9 +1,9 @@
-# testability-kata
+# testability-kata in C# (.NET Core)
 A kata that I use to teach people how to convert legacy non-testable code to 100% testable code. The different branches contain different "phases". The last phase has all tests implemented.
 
 This kata does not teach about test conventions like AAA (Arrange Act Assert) or how to name your tests. It doesn't dictate whether to use BDD (Business Driven Development) style testing or similar. You still have to agree on your team how to structure that. The kata focuses on the "universal" things that apply to all systems and all teams.
 
-**This is not a clean code kata! Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstrating testability alone.**
+**This is not a clean code kata! Please note that the code is far from production code, and is "weird" and "ugly" on purpose for demonstrating testability alone. Yes, clean code goes in hand with testable code, but I have decided to only clean up the minimal amount to still be able to demonstrate testability. I may decide to make a clean code kata later.**
 
 # Excercises
 These excercises are carefully thought through to allow them to be used on real existing systems too (just follow the steps below on any system, and you'll have a testable system).
@@ -30,8 +30,6 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-1
 
 **Important notes before you throw up**
 - This is a temporary step - don't worry. We will clean up later.
-- Yes we instantiate extra objects we don't re-use. Well, turns out this is actually how an IOC container does dependency injection internally. Remember, we can create millions of objects per second, and each object only allocates roughly 10 bytes of memory, for the duration of the object's lifetime, which is brief, after at which point the garbage collector collects it for us. _This is not where your performance problem is located unless you are in some application like a game where nano-optimization is important_.
-- Yes, I know the Open/Closed principle (O in SOLID) is based on inheritance. I said inheritance for code re-use breaks _many_ of the SOLID principles - not all. OCP is an exception.
 
 ### Step 2. Apply manual dependency injection to non-static class dependencies where only one instance of a dependency per class is required
 Doing this is part of following the Open/Closed principle (the "O" in SOLID). By injecting dependencies in from the outside, we essentially allow tests to "fake out" the "internals" of our class if they want to, and provide their own versions of dependencies for this class. As an example, it allows us to provide our own `Logger` for our `Program`, or our own `MailSender` for our `Logger`, even if `Logger` or `MailSender` was a third party NuGet package that we couldn't change.
@@ -95,7 +93,7 @@ Here we can just invoke the method directly and put an `ExpectedExceptionAttribu
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-6...step-7
 
 ### Integration testing the `CustomFileWriter` class
-The reason we call this an integration test (even if we fake out the `EmailSender`), is because the `CustomFileWriter` actually accesses the file system. If we wanted to fake the file system out as well, we could make our own `CustomFile` class instead of the `System.IO.File` static reference. However, it is also important to remember that too many abstractions can lead to _low code readability_, which is very bad and often worse than the extra coverage we get.
+The reason we call this an integration test (even if we fake out the `EmailSender`), is because the `CustomFileWriter` actually accesses the file system. If we wanted to fake the file system out as well, we could make our own `CustomFile` class instead of the `System.IO.File` static reference. However, it is also important to remember that too many abstractions can lead to _low code readability_, which is very bad and often worse than the extra coverage we miss out on.
 
 It is important to note that an integration test focuses more on testing a "feature" than testing a "specific function or unit". Therefore, instead of tests called `CallingSignUpInvokesMailSenderToSendActivationEmail`, we may have tests that look at it from a feature or business perspective, such as `WhenISignUpIGetAnActivationEmail`.
 
@@ -110,7 +108,7 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-7..
 
 **Important notes before you throw up**
 - In this phase we don't clean up the magic strings or optimize the program flow. This is on purpose, to keep the kata very small and understandable. We're not trying to teach clean code - we're trying to teach testability.
-- The steps below focus on cleaning the test code primarily.
+- The steps below focus on cleaning the test code primarily, not the code of the main program as much.
 
 ### Step 9. Re-use the "setup code" for all tests so that fakes are defined as fields on the test class
 In each test we are faking out several things and repeating ourselves over and over, violating the DRY principle (Don't Repeat Yourself). We should unify the generic setup logic for each test into a test initialization method.
@@ -128,7 +126,9 @@ _Note that the configuration of `Autofac` should ideally be turned into an `Auto
 
 To see this change: https://github.com/ffMathy/testability-kata/compare/step-9...step-10
 
-### Step 11. Introduce `FluffySpoon.Testing.Autofake` for automatic dependency faking
+### Step 11. Optional: Introduce `FluffySpoon.Testing.Autofake` for automatic dependency faking
+**Documentation:** https://github.com/ffMathy/FluffySpoon.Testing
+
 By introducing auto-faking and extracting the logic for creating the container into a separate class, we can automatically scan for a class' dependencies in the constructor and register them as fakes. This is great, because if a new dependency is added to a class, our existing tests won't break, and they will still compile.
 
 _You may think "why are we automatically faking all dependencies? What if I want to test the interaction between a class and its real dependencies?" - well, in that case we're talking about an integration test, and not a unit test. Autofaking is *not* useful for integration tests._
@@ -167,11 +167,13 @@ To see this change: https://github.com/ffMathy/testability-kata/compare/step-10.
 **Testability aspect:** By depending on interfaces (something that "does" something) we can substitute that functionality out and fake it for a class' dependencies.
 
 ## Beware of inheritance
-Inheritance (especially used entirely for code-reuse and not polymorphism) can easily break a large part of the SOLID principles, and make your code hard to test. 
+Inheritance (especially used entirely for code-reuse and not polymorphism) can potentially break a large part of the SOLID principles (except Open/Closed principle, which can be based on inheritance), and make your code harder to test. 
 
-A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. The reason this is bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
+A classic example is having some `UserService` which inherits from a `BaseService` to re-use methods that are defined on that base service. The reason this _can be_ bad for testability is that if you have 100 services and need to test them all, then all of the functionality defined in `BaseService` would have to be faked out and configured for all these 100 tests. 
 
 Instead, you could use composition (which by the way only makes you spend one extra line of code). This lets you make a test for `BaseService` separately, and then only focus on testing the things that are unique to the individual services on top of that.
+
+_Note that this only applies if your base class is only there for code-reuse and not polymorphism. If extracting the class into a separate class would break encapsulation by making your protected fields public or if the base class is small enough, it may not worth it._
 
 More information: https://en.wikipedia.org/wiki/Composition_over_inheritance
 

@@ -38,7 +38,7 @@ namespace TestabilityKata.Tests
 
             //if the existing file exists, delete it before running the test, since
             //we need to get to the point where a new file is created.
-            if (File.Exists(testFilePath))
+            if(File.Exists(testFilePath))
             {
                 File.SetAttributes(testFilePath, FileAttributes.Normal);
                 File.Delete(testFilePath);

@@ -11,7 +11,8 @@ namespace TestabilityKata
             {
                 Logger.Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
                 MailSender.SendMail("some-invalid-email-address.com", "Program has started.");
-            } catch(Exception ex)
+            } 
+            catch(Exception ex)
             {
                 Logger.Log(LogLevel.Error, "An error occured: " + ex);
             }

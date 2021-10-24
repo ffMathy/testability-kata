@@ -9,7 +9,7 @@ namespace TestabilityKata
         {
             try
             {
-                Logger.Log(LogLevel.Warning, "Some warning - program is starting up or whatever");
+                Logger.Log(LogLevel.Information, "Program is starting up or whatever");
                 MailSender.SendMail("some-invalid-email-address.com", "Program has started.");
             } 
             catch(Exception ex)
@@ -21,6 +21,8 @@ namespace TestabilityKata
 
     public enum LogLevel
     {
+        Debug,
+        Information,
         Warning,
         Error
     }
@@ -31,7 +33,7 @@ namespace TestabilityKata
         {
             Console.WriteLine(logLevel + ": " + logText);
 
-            if (logLevel == LogLevel.Error)
+            if (logLevel == LogLevel.Error || logLevel == LogLevel.Warning)
             {
 
                 //also log to file

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Autofac;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,11 @@ namespace TestabilityKata.Tests
         [TestInitialize]
         public void Initialize()
         {
-            mailSender = new MailSender();
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
+            
+            var container = containerBuilder.Build();
+            mailSender = container.Resolve<IMailSender>();
         }
 
         [TestMethod]

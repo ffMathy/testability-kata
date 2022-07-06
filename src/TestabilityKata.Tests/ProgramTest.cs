@@ -17,12 +17,17 @@ namespace TestabilityKata.Tests
         [TestInitialize]
         public void Initialize()
         {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
+
             fakeMailSender = Substitute.For<IMailSender>();
             fakeLogger = Substitute.For<ILogger>();
 
-            program = new Program(
-                fakeLogger,
-                fakeMailSender);
+            containerBuilder.Register(c => fakeMailSender).As<IMailSender>();
+            containerBuilder.Register(c => fakeLogger).As<ILogger>();
+
+            var container = containerBuilder.Build();
+            program = container.Resolve<IProgram>();
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.IO;
 
 namespace TestabilityKata
@@ -7,12 +8,12 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
-            var mailSender = new MailSender();
-            new Program(
-                    new Logger(
-                        mailSender,
-                        new CustomFileWriterFactory(mailSender)),
-                    mailSender)
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
+
+            var container = containerBuilder.Build();
+            container
+                .Resolve<IProgram>()
                 .Run();
         }
 

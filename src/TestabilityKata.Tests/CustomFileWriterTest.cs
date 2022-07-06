@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Autofac;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,20 @@ namespace TestabilityKata.Tests
     {
         private IMailSender fakeMailSender;
 
+        private ICustomFileWriterFactory customFileWriterFactory;
+
         [TestInitialize]
         public void Initialize()
         {
+            var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterModule(new TestabilityKataAutofacConfiguration());
+
             fakeMailSender = Substitute.For<IMailSender>();
+
+            containerBuilder.Register(c => fakeMailSender).As<IMailSender>();
+
+            var container = containerBuilder.Build();
+            customFileWriterFactory = container.Resolve<ICustomFileWriterFactory>();
         }
 
         [TestMethod]
@@ -23,9 +34,7 @@ namespace TestabilityKata.Tests
         {
             const string testFilePath = @"C:\WhenCreatingFileAnEmailIsSentOut.txt";
 
-            var customFileWriter = new CustomFileWriter(
-                fakeMailSender,
-                testFilePath);
+            var customFileWriter = customFileWriterFactory.Create(testFilePath);
 
             //if the existing file exists, delete it before running the test, since
             //we need to get to the point where a new file is created.

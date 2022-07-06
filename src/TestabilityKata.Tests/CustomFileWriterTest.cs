@@ -10,12 +10,22 @@ namespace TestabilityKata.Tests
     [TestClass]
     public class CustomFileWriterTest
     {
+        private IMailSender fakeMailSender;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            fakeMailSender = Substitute.For<IMailSender>();
+        }
+
         [TestMethod]
         public void WhenCreatingFileAnEmailIsSentOut()
         {
-            var fakeMailSender = Substitute.For<IMailSender>();
-
             const string testFilePath = @"C:\WhenCreatingFileAnEmailIsSentOut.txt";
+
+            var customFileWriter = new CustomFileWriter(
+                fakeMailSender,
+                testFilePath);
 
             //if the existing file exists, delete it before running the test, since
             //we need to get to the point where a new file is created.
@@ -25,9 +35,6 @@ namespace TestabilityKata.Tests
                 File.Delete(testFilePath);
             }
 
-            var customFileWriter = new CustomFileWriter(
-                fakeMailSender,
-                testFilePath);
             customFileWriter.AppendLine("Some line");
 
             fakeMailSender

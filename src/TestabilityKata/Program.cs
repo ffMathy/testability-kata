@@ -7,14 +7,19 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
+            new Program().Run();
+        }
+
+        public void Run()
+        {
             try
             {
-                Logger.Log(LogLevel.Information, "Program is starting up or whatever");
-                MailSender.SendMail("some-invalid-email-address.com", "Program has started.");
+                new Logger().Log(LogLevel.Information, "Program is starting up or whatever");
+                new MailSender().SendMail("some-invalid-email-address.com", "Program has started.");
             } 
             catch(Exception ex)
             {
-                Logger.Log(LogLevel.Error, "An error occured: " + ex);
+                new Logger().Log(LogLevel.Error, "An error occured: " + ex);
             }
         }
     }
@@ -27,9 +32,9 @@ namespace TestabilityKata
         Error
     }
 
-    public static class Logger
+    public class Logger
     {
-        public static void Log(LogLevel logLevel, string logText)
+        public void Log(LogLevel logLevel, string logText)
         {
             Console.WriteLine(logLevel + ": " + logText);
 
@@ -41,15 +46,15 @@ namespace TestabilityKata
                 writer.AppendLine(logText);
 
                 //send e-mail about error
-                MailSender.SendMail("mathias.lorenzen@mailinator.com", logText);
+                new MailSender().SendMail("mathias.lorenzen@mailinator.com", logText);
 
             }
         }
     }
 
-    public static class MailSender
+    public class MailSender
     {
-        public static void SendMail(string recipient, string content)
+        public void SendMail(string recipient, string content)
         {
             if (!recipient.Contains("@"))
                 throw new ArgumentException("The recipient must be a valid e-mail.", nameof(recipient));
@@ -73,7 +78,7 @@ namespace TestabilityKata
             lock(typeof(CustomFileWriter)) {
                 if (!File.Exists(FilePath))
                 {
-                    MailSender.SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
+                    new MailSender().SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
                     File.WriteAllText(FilePath, "");
                 }
 

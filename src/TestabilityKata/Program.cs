@@ -7,19 +7,34 @@ namespace TestabilityKata
     {
         public static void Main(string[] args)
         {
-            new Program().Run();
+            var mailSender = new MailSender();
+            new Program(
+                    new Logger(mailSender),
+                    mailSender)
+                .Run();
+        }
+
+        private readonly Logger logger;
+        private readonly MailSender mailSender;
+
+        public Program(
+            Logger logger,
+            MailSender mailSender)
+        {
+            this.logger = logger;
+            this.mailSender = mailSender;
         }
 
         public void Run()
         {
             try
             {
-                new Logger().Log(LogLevel.Information, "Program is starting up or whatever");
-                new MailSender().SendMail("some-invalid-email-address.com", "Program has started.");
+                logger.Log(LogLevel.Information, "Program is starting up or whatever");
+                mailSender.SendMail("some-invalid-email-address.com", "Program has started.");
             } 
             catch(Exception ex)
             {
-                new Logger().Log(LogLevel.Error, "An error occured: " + ex);
+                logger.Log(LogLevel.Error, "An error occured: " + ex);
             }
         }
     }
@@ -34,6 +49,17 @@ namespace TestabilityKata
 
     public class Logger
     {
+        //we can't do CustomFileWriter yet, because its file name depends on the log level.
+        //see the next step for that.
+
+        private readonly MailSender mailSender;
+
+        public Logger(
+            MailSender mailSender)
+        {
+            this.mailSender = mailSender;
+        }
+
         public void Log(LogLevel logLevel, string logText)
         {
             Console.WriteLine(logLevel + ": " + logText);
@@ -42,11 +68,11 @@ namespace TestabilityKata
             {
 
                 //also log to file
-                var writer = new CustomFileWriter(@"C:\" + logLevel + "-annoying-log-file.txt");
+                var writer = new CustomFileWriter(mailSender, @"C:\" + logLevel + "-annoying-log-file.txt");
                 writer.AppendLine(logText);
 
                 //send e-mail about error
-                new MailSender().SendMail("mathias.lorenzen@mailinator.com", logText);
+                mailSender.SendMail("mathias.lorenzen@mailinator.com", logText);
 
             }
         }
@@ -66,10 +92,16 @@ namespace TestabilityKata
 
     public class CustomFileWriter
     {
+        private readonly MailSender mailSender;
+
         public string FilePath { get; }
 
-        public CustomFileWriter(string filePath)
+        public CustomFileWriter(
+            MailSender mailSender,
+            string filePath)
         {
+            this.mailSender = mailSender;
+
             FilePath = filePath;
         }
 
@@ -78,7 +110,7 @@ namespace TestabilityKata
             lock(typeof(CustomFileWriter)) {
                 if (!File.Exists(FilePath))
                 {
-                    new MailSender().SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
+                    mailSender.SendMail("mathias.lorenzen@mailinator.com", "The file " + FilePath + " was created since it didn't exist.");
                     File.WriteAllText(FilePath, "");
                 }
 

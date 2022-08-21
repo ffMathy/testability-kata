@@ -2,6 +2,7 @@ using Autofac;
 using FluffySpoon.Testing.Autofake;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 
 namespace TestabilityKata.Tests
 {
@@ -33,9 +34,29 @@ namespace TestabilityKata.Tests
         [TestMethod]
         public void ProgramLogsErrorWhenExceptionIsThrown()
         {
-            //problem: how can we know if the logging works, and how can we
-            //simulate an error when we can't modify the MailSender?
-            Program.Main(new string[0]);
+            var fakeMailSender = Substitute.For<IMailSender>();
+            var fakeLogger = Substitute.For<ILogger>();
+
+            var program = new Program(
+                fakeLogger,
+                fakeMailSender);
+
+            //we here make the EmailSender's SendMail throw an exception no 
+            //matter what arguments it was called with.
+            fakeMailSender
+                .When(x => x.SendMail(
+                    Arg.Any<string>(),
+                    Arg.Any<string>()))
+                .Throw(new Exception());
+
+            program.Run();
+
+            //by now the logger should have received some "error" level log message
+            fakeLogger
+                .Received()
+                .Log(
+                    LogLevel.Error,
+                    Arg.Any<string>());
         }
     }
 }
